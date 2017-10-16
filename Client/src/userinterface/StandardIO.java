@@ -1,6 +1,8 @@
 package userinterface;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
 
 /**
  * Interacts with the client through the console. Reads a client's commands by
@@ -12,7 +14,7 @@ import java.io.*;
 public class StandardIO implements Runnable {
     
     private final BufferedReader console;
-    private clientcommandhandler.CommandHandler commandHandler;
+    private clientcommandhandler.ClientCommandHandler commandHandler;
     
     
     /**
@@ -32,7 +34,7 @@ public class StandardIO implements Runnable {
      * Creates an instance with an associated command handler.
      * @param handler The handler to be associated with this instance.
      */
-    public StandardIO(clientcommandhandler.CommandHandler handler) {
+    public StandardIO(clientcommandhandler.ClientCommandHandler handler) {
         this.commandHandler = handler;
         this.console = new BufferedReader(new InputStreamReader(System.in));
         
@@ -47,7 +49,7 @@ public class StandardIO implements Runnable {
      * Set the command handler for this instance.
      * @param handler 
      */
-    public void setCommandHandler(clientcommandhandler.CommandHandler handler) {
+    public void setCommandHandler(clientcommandhandler.ClientCommandHandler handler) {
         this.commandHandler = handler;
     }
     
