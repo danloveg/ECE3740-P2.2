@@ -15,7 +15,6 @@ public class ServerCommandHandler {
     client.Client myClient;
     BufferedReader input;
     OutputStream output;
-    userinterface.StandardIO myUI;
     
 
     /**
@@ -30,7 +29,6 @@ public class ServerCommandHandler {
                                Socket clientSocket,
                                userinterface.StandardIO ui) throws IOException {
         this.myClient = client;
-        this.myUI = ui;
         this.input = new BufferedReader(
                      new InputStreamReader(clientSocket.getInputStream()));
         this.output = clientSocket.getOutputStream();
@@ -38,16 +36,17 @@ public class ServerCommandHandler {
 
 
     /**
-     * Blocking method that reads an 8 character String from the server. Waits
-     * to receive 8 bytes until it returns the sequence in the order they were
+     * Blocking method that reads an n-character String from the server. Waits
+     * to receive n bytes until it returns the sequence in the order they were
      * received.
+     * @param msgLength The length of the message
      * @return The byte from the server.
      * @throws IOException 
      */
-    public String readFromServer() throws IOException {
-        StringBuilder message = new StringBuilder();
+    public String readFromServer(int msgLength) throws IOException {
+        StringBuilder message = new StringBuilder(msgLength);
         
-        while (message.length() < 8) {
+        while (message.length() < msgLength) {
             if (input != null && input.ready()) {
                 char serverByte = (char) input.read();
                 message.append(serverByte);

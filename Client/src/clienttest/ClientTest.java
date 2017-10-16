@@ -24,7 +24,7 @@ public class ClientTest {
         new Thread(userInterface).start();
         
         // Build the title to display to the client
-        StringBuilder title = new StringBuilder(100);
+        StringBuilder title = new StringBuilder(150);
         title.append("------------- Client Application -------------\n");
         title.append("The following commands are available:\n");
         title.append("* connect:\tConnect to server\n");

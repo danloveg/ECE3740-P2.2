@@ -5,17 +5,25 @@ import java.net.*;
 import servercommandhandler.ServerCommandHandler;
 
 /**
- * 
+ * Client to connect to server via TCP/IP socket.
  * 
  * @author Daniel Lovegrove
  */
 public class Client implements Runnable {
+    // The length of the time string from the server
+    private static final int MSG_LENGTH = 8;
+    
     private int portNumber;
     private Socket clientSocket = null;
-    private userinterface.StandardIO console;
+    private final userinterface.StandardIO console;
     private servercommandhandler.ServerCommandHandler commandHandler;
     private boolean connected = false;
 
+    /**
+     * Creates an instance with an associated port number and user interface
+     * @param portNumber The port number
+     * @param ui The user interface
+     */
     public Client(int portNumber, userinterface.StandardIO ui) {
         this.portNumber = 5555;
         this.console = ui;
@@ -24,17 +32,18 @@ public class Client implements Runnable {
 
     /**
      * Connect to a server on the specified port number using the local host.
+     * @param address The host's address
      */
-    public void connectToServer() {
+    public void connectToServer(InetAddress address) {
         if (null == this.clientSocket) {
             try {
                 // Create a socket
-                clientSocket = new Socket(InetAddress.getLocalHost(), portNumber);
+                clientSocket = new Socket(address, portNumber);
                 // Create a new command handler
                 this.commandHandler = new ServerCommandHandler(this,
                                                                clientSocket,
                                                                console);
-
+                // Mark Client as "connected"
                 connected = true;
             } catch (IOException e) {
                 console.log(e.toString());
@@ -49,8 +58,6 @@ public class Client implements Runnable {
      * and closes the Server Command Handler
      */
     public void disconnectFromServer() {
-        connected = false;
-        
         try {
             // Close the socket
             if (null != this.clientSocket) {
@@ -68,6 +75,9 @@ public class Client implements Runnable {
             System.err.println("Could not close client connection, exiting program.");
             System.exit(1);
         }
+        
+        // Mark client as "Not connected."
+        connected = false;
     }
 
 
@@ -95,11 +105,14 @@ public class Client implements Runnable {
     }
 
 
+    /**
+     * Reads messages from the server.
+     */
     @Override
     public void run() {
         while (true == connected) {
             try {
-                String msg = this.commandHandler.readFromServer();
+                String msg = this.commandHandler.readFromServer(MSG_LENGTH);
                 console.log("Response: " + msg);
             } catch (IOException e) {
                 if (true == connected) {

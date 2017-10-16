@@ -1,5 +1,8 @@
 package clientcommandhandler;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 /**
  * Handles the executing of the user's commands.
  * 
@@ -33,35 +36,35 @@ public class ClientCommandHandler {
         switch (cmd) {
             case "connect":
                 if (false == myClient.isConnected()) {
-                    console.log("Attempting connection...");
-                    myClient.connectToServer();
-                    Thread clientThread = new Thread(myClient);
-                    clientThread.start();
-                    console.log("Connected to server.");
+                    try {
+                        myClient.connectToServer(InetAddress.getLocalHost());
+                        Thread clientThread = new Thread(myClient);
+                        clientThread.start();
+                        console.log("Connected to server.");
+                    } catch (UnknownHostException e) {}
                 } else {
                     console.log("Already connected!");
                 }
                 break;
             case "disconnect":
-                if (myClient.isConnected()) {
-                    console.log("Disconnecting from server...");
+                if (true == myClient.isConnected()) {
                     myClient.sendMessageToServer((byte) 'd');
                     myClient.disconnectFromServer();
-                    console.log("Disconnected.");
+                    console.log("Disconnected from server.");
                 } else {
                     console.log("No connected server.");
                 }
                 break;
             case "quit":
                 console.log("Quitting...");
-                if (myClient.isConnected()) {
+                if (true == myClient.isConnected()) {
                     myClient.sendMessageToServer((byte) 'q');
                     myClient.disconnectFromServer();
                 }
                 System.exit(0);
                 break;
             case "time":
-                if (myClient.isConnected()) {
+                if (true == myClient.isConnected()) {
                     myClient.sendMessageToServer((byte) 't');
                 } else {
                     console.log("No connected server.");
