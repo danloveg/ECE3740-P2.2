@@ -11,7 +11,7 @@ import java.io.*;
  */
 public class StandardIO implements Runnable {
     
-    private BufferedReader console;
+    private final BufferedReader console;
     private clientcommandhandler.CommandHandler commandHandler;
     
     

@@ -38,12 +38,16 @@ public class CommandHandler {
                 console.log("WIP: User wants to disconnect.");
                 break;
             case "quit":
-                console.log("WIP: User wants to quit.");
+                console.log("Exiting...");
+                System.exit(0);
                 break;
             case "time":
                 console.log("WIP: User wants the time.");
                 break;
+            case "":
+                break;
             default:
+                console.log("\"" + cmd + "\" is not recognized.");
                 break;
         }
     }
