@@ -78,11 +78,6 @@ public class Client implements Runnable {
     public synchronized boolean isConnected() {
         return connected;
     }
-    
-    
-    public synchronized void stopThread() {
-        this.connected = false;
-    }
 
 
     /**

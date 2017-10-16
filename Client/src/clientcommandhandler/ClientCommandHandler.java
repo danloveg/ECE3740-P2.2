@@ -45,7 +45,6 @@ public class ClientCommandHandler {
             case "disconnect":
                 if (myClient.isConnected()) {
                     console.log("Disconnecting from server...");
-                    myClient.stopThread();
                     myClient.sendMessageToServer((byte) 'd');
                     myClient.disconnectFromServer();
                     console.log("Disconnected.");
@@ -56,7 +55,6 @@ public class ClientCommandHandler {
             case "quit":
                 console.log("Quitting...");
                 if (myClient.isConnected()) {
-                    myClient.stopThread();
                     myClient.sendMessageToServer((byte) 'q');
                     myClient.disconnectFromServer();
                 }
